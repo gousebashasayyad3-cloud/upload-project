@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}TrustVault{% endblock %}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f9;
+            margin: 0;
+            color: #222;
+        }
+
+        header {
+            background: #14213d;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            margin-top: 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 18px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        button,
+        .button {
+            background: #1565c0;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        input,
+        select {
+            display: block;
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            padding: 10px;
+            margin: 8px 0 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .message {
+            padding: 12px;
+            background: #e8f5e9;
+            margin-bottom: 12px;
+        }
+
+        .errorlist {
+            color: #b00020;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>TrustVault</h1>
+
+    <p>Secure Document Sharing & Audit Platform</p>
+
+    <nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+
+            <a href="{% url 'upload_document' %}">Upload</a>
+
+            <form method="post" action="{% url 'logout' %}"
+                  style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+</body>
+</html>

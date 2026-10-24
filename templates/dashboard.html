@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | TrustVault{% endblock %}
+
+{% block content %}
+
+<h2>Welcome, {{ user.username }}</h2>
+
+<p>Manage your documents securely.</p>
+
+<a class="button" href="{% url 'upload_document' %}">
+    Upload Document
+</a>
+
+<h3>My Documents</h3>
+
+{% if documents %}
+    <table>
+        <thead>
+            <tr>
+                <th>Document</th>
+                <th>Uploaded</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for document in documents %}
+                <tr>
+                    <td>{{ document.title }}</td>
+
+                    <td>{{ document.created_at|date:"d M Y H:i" }}</td>
+
+                    <td>
+                        <a href="{% url 'view_document' document.id %}">
+                            View
+                        </a>
+
+                        |
+
+                        <a href="{% url 'download_document' document.id %}">
+                            Download
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You haven't uploaded any documents yet.</p>
+{% endif %}
+
+<h3>Documents Shared With Me</h3>
+
+{% if shared_permissions %}
+    <table>
+        <thead>
+            <tr>
+                <th>Document</th>
+                <th>Owner</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for permission in shared_permissions %}
+                <tr>
+                    <td>{{ permission.document.title }}</td>
+
+                    <td>{{ permission.document.owner.username }}</td>
+
+                    <td>
+                        <a href="{% url 'view_document' permission.document.id %}">
+                            View
+                        </a>
+
+                        {% if permission.can_download %}
+                            |
+                            <a href="{% url 'download_document' permission.document.id %}">
+                                Download
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No documents have been shared with you.</p>
+{% endif %}
+
+{% endblock %}

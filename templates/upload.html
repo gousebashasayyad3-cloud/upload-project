@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Document | TrustVault{% endblock %}
+
+{% block content %}
+
+<h2>Upload a Document</h2>
+
+<p>Upload a document to your private document storage.</p>
+
+<form method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Upload Document</button>
+
+</form>
+
+{% endblock %}
